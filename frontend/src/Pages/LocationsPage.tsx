@@ -1,4 +1,5 @@
-import { Card, List, Tag, Typography } from 'antd';
+import {Card, Row, Col, Tag, Typography} from 'antd';
+import {JSX} from "react";
 
 const { Title, Text } = Typography;
 
@@ -20,35 +21,39 @@ const locations = [
 ];
 
 export default function LocationsPage() {
+
+    const content: JSX.Element[] = locations.map((location)=> (
+        <Col
+            key={location.id}
+            xs={24}
+            sm={12}
+            md={8}
+            lg={6}
+            xl={4}>
+            <Card
+                title={location.name}
+                hoverable
+            >
+                <Text>{location.address}</Text>
+                <br />
+                <Text type="secondary">
+                    Courts: {location.courts}
+                </Text>
+                <br />
+                {location.indoor ? (
+                    <Tag color="green">Indoor</Tag>
+                ) : (
+                    <Tag color="blue">Outdoor</Tag>
+                )}
+            </Card>
+        </Col>
+    ));
     return (
         <>
             <Title level={3}>Canchas cerca tuyo</Title>
-
-            <List
-                grid={{ gutter: 16, column: 1 }}
-                dataSource={locations}
-                renderItem={(location) => (
-                    <List.Item>
-                        <Card
-                            title={location.name}
-                            hoverable
-                        >
-                            <Text>{location.address}</Text>
-                            <br />
-                            <Text type="secondary">
-                                Courts: {location.courts}
-                            </Text>
-                            <br />
-
-                            {location.indoor ? (
-                                <Tag color="green">Indoor</Tag>
-                            ) : (
-                                <Tag color="blue">Outdoor</Tag>
-                            )}
-                        </Card>
-                    </List.Item>
-                )}
-            />
+            <Row gutter={[16, 16]}>
+                {content}
+            </Row>
         </>
     );
 }
