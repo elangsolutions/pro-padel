@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Location {
+  id        String   @id @default(uuid())
+  name      String
+  address   String
+  courts    Int
+  indoor    Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum CategoryEnum {
+  Primera
+  Segunda
+  Tercera
+  Cuarta
+  Quinta
+  Sexta
+  Septima
+  Octava
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  googleId  String   @unique
+  name      String
+  phone     String
+  avatarUrl String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  player    Player?
+}
+
+model Player {
+  id           Int          @id @default(autoincrement())
+  name         String
+  user         User         @relation(fields: [userId], references: [id])
+  ranking      Int
+  category     CategoryEnum
+  categoryGoal CategoryEnum
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  userId       Int          @unique
+}
